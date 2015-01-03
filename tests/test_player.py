@@ -98,3 +98,10 @@ class TestMe:
         assert m.has_cards == {'white', 'green', 'hall'}
         assert m.num_cards == 3
         assert m.not_has_cards == set(DECK).difference(m.has_cards)
+
+    def test_dupes(self):
+        m = player.Me(['white', 'green', 'hall', 'white'])
+
+        assert m.has_cards == {'white', 'green', 'hall'}
+        assert m.num_cards == 3
+        assert m.not_has_cards == set(DECK).difference(m.has_cards)
