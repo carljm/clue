@@ -7,17 +7,20 @@ class Game:
 
     Each player should be a (name, num-cards) tuple.
     """
-    player_num_cards = len(cards.DECK) - 3
+    num_player_cards = len(cards.DECK) - 3
 
     def __init__(self, me, others):
         self.others = others
+        self.others_by_name = {p.name: p for p in others}
+        if len(self.others_by_name) != len(self.others):
+            raise ImpossibleError("Player names must be unique.")
         self.me = me
         total_cards = self.me.num_cards + sum(
             [p.num_cards for p in self.others])
-        if total_cards != self.player_num_cards:
+        if total_cards != self.num_player_cards:
             raise ImpossibleError(
                 "%s cards held by players, should be %s."
-                % (total_cards, self.player_num_cards)
+                % (total_cards, self.num_player_cards)
             )
 
     def snapshot(self):

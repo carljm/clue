@@ -26,6 +26,10 @@ class TestGame:
         with pytest.raises(ImpossibleError):
             game.Game(Me({}), [Player("Foo", 3)])
 
+    def test_dupe_player_names(self):
+        with pytest.raises(ImpossibleError):
+            game.Game(Me({}), [Player("Foo", 3), Player("Foo", 15)])
+
     def test_snapshot(self):
         g = game.Game(Me({'white'}), [Player("Foo", 17)])
 

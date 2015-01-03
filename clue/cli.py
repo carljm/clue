@@ -23,10 +23,12 @@ def read_game():
     others = []
     cards_so_far = me.num_cards
     print("Tell me about the other players, starting from my left.")
-    while cards_so_far < Game.player_num_cards:
+    while cards_so_far < Game.num_player_cards:
         default_name = "Player %s" % (len(others) + 1)
-        default_num_cards = min(3, Game.player_num_cards - cards_so_far)
-        player = read_player(default_name, default_num_cards)
+        max_cards = Game.num_player_cards - cards_so_far
+        default_num_cards = min(3, max_cards)
+        player = read_player(
+            default_name, default_num_cards, max_cards=max_cards)
         others.append(player)
         cards_so_far += player.num_cards
     return Game(me, others)
@@ -55,15 +57,24 @@ def read_cards(prompt):
             print(e)
 
 
-def read_player(default_name, default_num_cards=3):
+def read_player(default_name, default_num_cards=3, max_cards=None):
     """Query user for name of a player."""
     name = _read("Name", default=default_name)
-    num_cards = _read(
-        "How many cards does %s have?" % name,
-        default=default_num_cards,
-        coerce_to=int,
-    )
-    return Player(name, num_cards)
+    while True:
+        num_cards = _read(
+            "How many cards does %s have?" % name,
+            default=default_num_cards,
+            coerce_to=int,
+        )
+        print("got %s" % num_cards)
+        if max_cards and num_cards > max_cards:
+            if max_cards == 1:
+                msg = "There's only 1 card"
+            else:
+                msg = "There're only %s cards" % max_cards
+            print("%s left for %s!" % (msg, name))
+            continue
+        return Player(name, num_cards)
 
 
 def parse_card(prefix):

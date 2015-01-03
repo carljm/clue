@@ -33,6 +33,34 @@ class TestReadGame:
             ("Barb", 4), ("Elaine", 3), ("Kathy", 3), ("Mark", 3), ("Bobby", 2)
         ]
 
+    @pytest.mark.inputs(
+        'din,ha,wh',
+        'Barb', '14',
+        'Elaine', '2', '1'  # 2 is too many, must re-enter
+    )
+    def test_too_many_cards(self, mock_input, capsys):
+        g = cli.read_game()
+
+        assert g.others[1].name == "Elaine"
+        assert len(g.others) == 2
+        assert g.others[1].num_cards == 1
+        out, err = capsys.readouterr()
+        assert "There's only 1 card left for Elaine!" in out
+
+    @pytest.mark.inputs(
+        'din,ha,wh',
+        'Barb', '13',
+        'Elaine', '5', '3', '2'  # 5 and 3 are too many, must re-enter
+    )
+    def test_too_many_cards_multiple_left(self, mock_input, capsys):
+        g = cli.read_game()
+
+        assert g.others[1].name == "Elaine"
+        assert len(g.others) == 2
+        assert g.others[1].num_cards == 2
+        out, err = capsys.readouterr()
+        assert out.count("There're only 2 cards left for Elaine!") == 2
+
 
 class TestReadTriple:
     def test_triple(self, mock_input):

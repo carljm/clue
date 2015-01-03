@@ -1,4 +1,4 @@
-ROOMS = [
+ROOMS = {
     'hall',
     'dining room',
     'billiard room',
@@ -8,27 +8,27 @@ ROOMS = [
     'conservatory',
     'lounge',
     'library',
-]
+}
 
-PEOPLE = [
+PEOPLE = {
     'green',
     'mustard',
     'scarlet',
     'plum',
     'white',
     'peacock',
-]
+}
 
-WEAPONS = [
+WEAPONS = {
     'revolver',
     'rope',
     'lead pipe',
     'wrench',
     'candlestick',
     'knife',
-]
+}
 
-DECK = ROOMS + PEOPLE + WEAPONS
+DECK = ROOMS.union(PEOPLE.union(WEAPONS))
 
 
 class InvalidTriple(ValueError):
