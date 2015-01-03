@@ -20,5 +20,11 @@ class Game:
                 % (total_cards, self.player_num_cards)
             )
 
+    def snapshot(self):
+        return self.__class__(
+            self.me.snapshot(),
+            [p.snapshot() for p in self.others]
+        )
+
     def __repr__(self):
         return "%s(%r, %r)" % (self.__class__.__name__, self.me, self.others)

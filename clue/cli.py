@@ -33,7 +33,7 @@ def read_game():
 
 
 def read_triple(prompt):
-    """Query user for a  person/weapon/room triple."""
+    """Query user for a person/weapon/room triple."""
     while True:
         cards = read_cards(prompt)
         rooms = [c for c in cards if c in ROOMS]

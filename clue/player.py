@@ -52,6 +52,14 @@ class Player:
                 % (self.name, impossible)
             )
 
+    def snapshot(self):
+        s = self.__class__(self.name, self.num_cards)
+        s.has_cards = self.has_cards.copy()
+        s.not_has_cards = self.not_has_cards.copy()
+        s.asked = self.asked.copy()
+        s.shown = self.shown.copy()
+        return s
+
     def __repr__(self):
         return "%s(%r, %r)" % (
             self.__class__.__name__, self.name, self.num_cards)
@@ -63,6 +71,12 @@ class Me(Player):
         super().__init__("Me", len(my_cards))
         self.has_cards.update(my_cards)
         self.not_has_cards = set(cards.DECK).difference(self.has_cards)
+
+    def snapshot(self):
+        s = self.__class__(self.has_cards)
+        s.asked = self.asked.copy()
+        s.shown = self.shown.copy()
+        return s
 
     def __repr__(self):
         return "%s(%r)" % (self.__class__.__name__, sorted(self.has_cards))
