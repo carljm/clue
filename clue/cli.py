@@ -1,4 +1,4 @@
-from .cards import DECK
+from .cards import DECK, ROOMS, WEAPONS, PEOPLE, Triple
 from .game import Game
 from .player import Player, Me
 
@@ -16,6 +16,7 @@ class UnknownPlayerError(CliError):
 
 
 def read_game():
+    """Query the user about the initial game setup (players and cards)."""
     my_cards = read_cards("My cards (comma-separated):")
     print("My cards are %r" % my_cards)
     me = Me(my_cards)
@@ -31,7 +32,21 @@ def read_game():
     return Game(me, others)
 
 
+def read_triple(prompt):
+    """Query user for a  person/weapon/room triple."""
+    while True:
+        cards = read_cards(prompt)
+        rooms = [c for c in cards if c in ROOMS]
+        weapons = [c for c in cards if c in WEAPONS]
+        people = [c for c in cards if c in PEOPLE]
+        if any(len(l) != 1 for l in [rooms, weapons, people]):
+            print("Need a person, a weapon, and a room.")
+            continue
+        return Triple(people[0], weapons[0], rooms[0])
+
+
 def read_cards(prompt):
+    """Query user for any non-empty list of valid cards."""
     while True:
         cards = _read(prompt, required=True).split(',')
         try:
@@ -41,6 +56,7 @@ def read_cards(prompt):
 
 
 def read_player(default_name, default_num_cards=3):
+    """Query user for name of a player."""
     name = _read("Name", default=default_name)
     num_cards = _read(
         "How many cards does %s have?" % name,
@@ -51,10 +67,12 @@ def read_player(default_name, default_num_cards=3):
 
 
 def parse_card(prefix):
+    """Parse a valid card from given unambiguous prefix."""
     return _parse(prefix, DECK, UnknownCardError, 'card')
 
 
 def parse_player(prefix, names):
+    """Parse a valid player name from given unambiguous prefix."""
     return _parse(prefix, names, UnknownPlayerError, 'player')
 
 
@@ -79,6 +97,7 @@ def _read(prompt, default=None, required=False, coerce_to=str):
 
 
 def _parse(prefix, options, exception_class, option_type):
+    """Select one of ``options`` based on unambiguous ``prefix``."""
     canonical = prefix.lower().strip()
     candidates = [o for o in options if o.lower().startswith(canonical)]
     if len(candidates) > 1:

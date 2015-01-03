@@ -34,6 +34,28 @@ class TestReadGame:
         ]
 
 
+class TestReadTriple:
+    def test_triple(self, mock_input):
+        mock_input.return_value = 'ro,plum,ha'
+
+        t = cli.read_triple("Hey")
+
+        assert t.room == 'hall'
+        assert t.weapon == 'rope'
+        assert t.person == 'plum'
+
+    @pytest.mark.inputs('ro,rev,ha', 'din,wh,le')
+    def test_bad_triple(self, mock_input, capsys):
+        t = cli.read_triple("Hey")
+
+        assert t.room == 'dining room'
+        assert t.weapon == 'lead pipe'
+        assert t.person == 'white'
+        assert mock_input.call_count == 2
+        out, err = capsys.readouterr()
+        assert out == "Need a person, a weapon, and a room.\n"
+
+
 class TestReadCards:
     def test_read_cards(self, mock_input):
         mock_input.return_value = 'din,wh'
