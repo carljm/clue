@@ -10,6 +10,9 @@ class TestParseCard:
     def test_full(self):
         assert cli.parse_card('green') == 'green'
 
+    def test_strip(self):
+        assert cli.parse_card('  din ') == 'dining room'
+
     def test_case_insensitive(self):
         assert cli.parse_card('Revol') == 'revolver'
 

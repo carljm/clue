@@ -1,5 +1,4 @@
 from . import cards
-from . import player
 from .exceptions import ImpossibleError
 
 
@@ -8,15 +7,15 @@ class Game:
 
     Each player should be a (name, num-cards) tuple.
     """
-    def __init__(self, player_data, my_cards):
-        self.other_names = [d[0] for d in player_data]
-        self.others = [player.Player(*d) for d in player_data]
-        self.me = player.Me(my_cards)
+    player_num_cards = len(cards.DECK) - 3
+
+    def __init__(self, me, others):
+        self.others = others
+        self.me = me
         total_cards = self.me.num_cards + sum(
             [p.num_cards for p in self.others])
-        target = len(cards.DECK) - 3
-        if total_cards != target:
+        if total_cards != self.player_num_cards:
             raise ImpossibleError(
                 "%s cards held by players, should be %s."
-                % (total_cards, target)
+                % (total_cards, self.player_num_cards)
             )
