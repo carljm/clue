@@ -90,6 +90,11 @@ class TestPlayer:
         with pytest.raises(ImpossibleError):
             p.check()
 
+    def test_repr(self):
+        p = player.Player("Foo", 3)
+
+        assert repr(p) == "Player('Foo', 3)"
+
 
 class TestMe:
     def test_init(self):
@@ -105,3 +110,8 @@ class TestMe:
         assert m.has_cards == {'white', 'green', 'hall'}
         assert m.num_cards == 3
         assert m.not_has_cards == set(DECK).difference(m.has_cards)
+
+    def test_repr(self):
+        m = player.Me(['plum', 'wrench', 'hall'])
+
+        assert repr(m) == "Me(['hall', 'plum', 'wrench'])"

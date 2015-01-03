@@ -16,7 +16,8 @@ class UnknownPlayerError(CliError):
 
 
 def read_game():
-    my_cards = read_cards("Your cards (separate with commas):")
+    my_cards = read_cards("My cards (comma-separated):")
+    print("My cards are %r" % my_cards)
     me = Me(my_cards)
     others = []
     cards_so_far = me.num_cards
@@ -31,8 +32,8 @@ def read_game():
 
 
 def read_cards(prompt):
-    cards = _read(prompt, required=True).split(',')
     while True:
+        cards = _read(prompt, required=True).split(',')
         try:
             return [parse_card(c) for c in cards]
         except UnknownCardError as e:
@@ -41,7 +42,11 @@ def read_cards(prompt):
 
 def read_player(default_name, default_num_cards=3):
     name = _read("Name", default=default_name)
-    num_cards = _read("# cards", default=default_num_cards, coerce_to=int)
+    num_cards = _read(
+        "How many cards does %s have?" % name,
+        default=default_num_cards,
+        coerce_to=int,
+    )
     return Player(name, num_cards)
 
 

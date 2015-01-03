@@ -19,3 +19,6 @@ class Game:
                 "%s cards held by players, should be %s."
                 % (total_cards, self.player_num_cards)
             )
+
+    def __repr__(self):
+        return "%s(%r, %r)" % (self.__class__.__name__, self.me, self.others)

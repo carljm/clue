@@ -52,6 +52,10 @@ class Player:
                 % (self.name, impossible)
             )
 
+    def __repr__(self):
+        return "%s(%r, %r)" % (
+            self.__class__.__name__, self.name, self.num_cards)
+
 
 class Me(Player):
     def __init__(self, my_cards):
@@ -59,3 +63,6 @@ class Me(Player):
         super().__init__("Me", len(my_cards))
         self.has_cards.update(my_cards)
         self.not_has_cards = set(cards.DECK).difference(self.has_cards)
+
+    def __repr__(self):
+        return "%s(%r)" % (self.__class__.__name__, sorted(self.has_cards))

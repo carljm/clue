@@ -24,3 +24,8 @@ class TestGame:
     def test_wrong_number_cards(self):
         with pytest.raises(ImpossibleError):
             game.Game(Me({}), [Player("Foo", 3)])
+
+    def test_repr(self):
+        g = game.Game(Me({'white'}), [Player("Foo", 17)])
+
+        assert repr(g) == "Game(Me(['white']), [Player('Foo', 17)])"
