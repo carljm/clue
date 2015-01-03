@@ -1,0 +1,2 @@
+class ImpossibleError(ValueError):
+    pass
