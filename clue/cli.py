@@ -73,8 +73,9 @@ def _read(prompt, default=None, required=False, coerce_to=str):
             print("Sorry, I don't understand that.")
         else:
             if required and not val:
-                print("Can't go on without an answer here!")
-            return val
+                print("Can't go on without an answer!")
+            else:
+                return val
 
 
 def _parse(prefix, options, exception_class, option_type):
